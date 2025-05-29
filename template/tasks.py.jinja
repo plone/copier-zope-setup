@@ -9,6 +9,13 @@ def start(c):
     print("starting Plone")
     c.run("uv run runwsgi instance/etc/zope.ini")
 
+{% if db_storage == 'zeo' %}
+@task
+def zeo_start(c):
+    print("starting ZEO Server")
+    c.run("uv run runzeo -C zeo_server/etc/zeo.conf")
+
+{% endif %}
 @task
 def install(c):
     print("installing Plone")

@@ -124,7 +124,6 @@ _message_after_copy: |
       $ invoke zeo-start
 
   {% endif %}
-
   - Start Zope instance
 
       $ invoke start
@@ -139,7 +138,7 @@ _message_after_update: |
 _tasks:
   - [uv, venv]
   - [uv, add, invoke, tomlkit]
-  - [uv, run, invoke, "--search-root={{ _copier_conf.src_path }}", update-pyproject, "--plone-version={{_copier_answers['plone_version']}}", "--plone-distribution={{_copier_answers['plone_distribution']}}"]
+  - [uv, run, invoke, "--search-root={{ _copier_conf.src_path }}", update-pyproject, "--plone-version={{_copier_answers['plone_version']}}", "--plone-distribution={{_copier_answers['plone_distribution']}}", "--db-storage={{_copier_answers['db_storage']}}"]
   - command: "git init"
     when: "{{ _copier_operation == 'copy' }}"
   - command: "git add ."
