@@ -1,0 +1,22 @@
+%define INSTANCE {{ dst_path | realpath }}/zeo_server
+
+<zeo>
+  address {{zeo_server_address}}
+  read-only false
+  invalidation-queue-size 100
+  pid-filename $INSTANCE/zeo_server/var/zeoserver.pid
+</zeo>
+
+<filestorage 1>
+  path $INSTANCE/zeo_server/var/Data.fs
+  blob-dir $INSTANCE/zeo_server/var/blobstorage
+  pack-keep-old true
+</filestorage>
+
+<eventlog>
+  level info
+  <logfile>
+      path $INSTANCE/zeo_server/var/log/zeo.log
+      format %(asctime)s %(message)s
+    </logfile>
+</eventlog>

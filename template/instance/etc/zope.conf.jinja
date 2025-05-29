@@ -1,0 +1,68 @@
+%define INSTANCE {{ dst_path | realpath }}/instance
+# dst_realpath: {{ dst_realpath }}
+instancehome $INSTANCE
+
+%define CLIENTHOME $INSTANCE/var
+clienthome $CLIENTHOME
+
+debug-mode off
+debug-exceptions off
+security-policy-implementation C
+verbose-security off
+default-zpublisher-encoding utf-8
+
+<environment>
+    CHAMELEON_CACHE $INSTANCE/var/cache
+    zope_i18n_compile_mo_files true
+</environment>
+<dos_protection>
+    form-memory-limit 1MB
+    form-disk-limit 1GB
+    form-memfile-limit 4KB
+</dos_protection>
+
+# Database
+<zodb_db main>
+    mount-point /
+    cache-size 30000
+    {% if db_storage == "direct" %}
+    <filestorage>
+        path $INSTANCE/var/filestorage/Data.fs
+        blob-dir $INSTANCE/var/blobstorage
+        pack-keep-old true
+    </filestorage>
+    {% endif %}
+
+    {% if db_storage == "zeo" %}
+    <zeoclient>
+        # blobs
+        shared-blob-dir {{zeoclient_shared_blob_dir}}
+        blob-dir $INSTANCE/var/blobstorage
+        # general settings
+        server {{ zeo_server_address }}
+        name zeostorage
+        cache-size 128MB
+        blob-cache-size 6312427520
+        # Advanced options
+    </zeoclient>
+    {% endif %}
+
+    {% if db_storage == "relstorage" %}
+    %import relstorage
+    <relstorage>
+        # blob settings
+        shared-blob-dir false
+        blob-dir $INSTANCE/var/blobstorage
+        # relstorage general settings
+        keep-history true
+        read-only false
+        create-schema true
+        blob-cache-size 6312427520
+        # driver specific settings
+        <postgresql>
+            driver psycopg2
+            dsn dbname='{{dbname}}' host='{{dbhost}}' port='{{dbport}}'  user='{{dbuser}}' password='{{dbpassword}}'
+        </postgresql>
+    </relstorage>
+    {% endif %}
+</zodb_db>

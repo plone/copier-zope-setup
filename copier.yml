@@ -1,0 +1,153 @@
+_subdirectory: template
+_answers_file: .copier-answers.zope-setup.yml
+
+_exclude:
+    - "{% if _copier_operation == 'update' -%}instance/inituser{% endif %}"
+
+_skip_if_exists:
+  - pyproject.toml
+
+dst_path:
+  type: str
+  default: "{{ dst_path | default(_copier_conf.dst_path) }}"
+  when: false
+
+# questions
+
+plone_version:
+  type: str
+  help: Which Plone version you want to install?
+  default: "6.1.1"
+
+plone_distribution:
+  type: str
+  help: Which distribution do you want to install?
+  choices:
+    - "plone.volto"
+    - "plone.classicui"
+  default: "plone.classicui"
+
+initial_zope_username:
+  type: str
+  help: Initial Zope username
+  default: "admin"
+
+initial_user_password:
+  type: str
+  help: Initial Zope password (default is admin)
+  default: admin
+  secret: true
+
+db_storage:
+  type: str
+  help: Which storage type to be configured (direct=standalone)
+  choices:
+    - "direct"
+    - "zeo"
+    - "relstorage"
+  default: "direct"
+
+wsgi_listen:
+  type: str
+  help: WSGI address to listen on
+  default: "localhost:8080"
+
+wsgi_workers:
+  type: int
+  help: WSGI Workers
+  default: 2
+
+zeo_server_address:
+  type: str
+  help: ZEO Server address to listen on
+  default: "localhost:8000"
+  when: "{{ db_storage == 'zeo' }}"
+
+zeoclient_shared_blob_dir:
+  type: bool
+  help: ZEO client shared blob dir?
+  default: false
+  when: "{{ db_storage == 'zeo' }}"
+
+zeoclient_blob_cache_size:
+  type: int
+  help: ZEO client blob cache size in Bytes
+  default: 6312427520
+  when: "{{ db_storage == 'zeo' }}"
+
+dbname:
+  type: str
+  help: Database Name
+  when: "{{ db_storage == 'relstorage' }}"
+
+dbhost:
+  type: str
+  help: Database Host
+  default: localhost
+  when: "{{ db_storage == 'relstorage' }}"
+
+dbhost:
+  type: str
+  help: Database Port
+  default: 5432
+  when: "{{ db_storage == 'relstorage' }}"
+
+dbuser:
+  type: str
+  help: Database User
+  when: "{{ db_storage == 'relstorage' }}"
+
+dbpassword:
+  type: str
+  help: Database Password
+  default: ""
+  secret: true
+  when: "{{ db_storage == 'relstorage' }}"
+
+
+_message_after_copy: |
+  Your project "{{ project_name }}" has been created here: {{ dst_path | realpath }}
+
+  Next steps:
+
+  - Change directory to the project root:
+
+      $ cd {{ _copier_conf.dst_path }}
+
+  - Install
+
+      $ invoke install
+
+  {% if db_storage == "zeo" %}
+  - Start ZEO server
+
+      $ invoke zeo-start
+
+  {% endif %}
+
+  - Start Zope instance
+
+      $ invoke start
+
+  - Open browser at http://localhost:8080
+
+  - Check README.md for more details
+
+_message_after_update: |
+    Your project was updated, please run "git status" and resolve existing conflicts!
+
+_tasks:
+  - [uv, venv]
+  - [uv, add, invoke, tomlkit]
+  - [uv, run, invoke, "--search-root={{ _copier_conf.src_path }}", update-pyproject, "--plone-version={{_copier_answers['plone_version']}}", "--plone-distribution={{_copier_answers['plone_distribution']}}"]
+  - command: "git init"
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: "git add ."
+    when: "{{ _copier_operation == 'copy' }}"
+  - command: "git commit -m 'Copier template generated'"
+    when: "{{ _copier_operation == 'copy' }}"
+
+_migrations:
+  - command: 'git status'
+    working_directory: "{{ dst_path | realpath }}"
+    when: "{{ _stage == 'after' }}"
