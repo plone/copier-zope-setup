@@ -1,6 +1,7 @@
 # Copier template to create Plone/Zope setup - EXPERIMENTAL !!!
 
 It supports storage backends standalone, ZEO and Relstorage and is using pyruvate as WSGI server.
+This template is meant to work standalone and inside an Plone addon.
 
 ## Features
 
