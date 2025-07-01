@@ -1,7 +1,11 @@
 [project]
 name = "zope-setup"
 version = "1.0.0"
-dependencies = []
+dependencies = [
+{% for addon in plone_addons %}
+    "{{addon}}",
+{% endfor %}
+]
 requires-python = ">=3.11.1"
 
 

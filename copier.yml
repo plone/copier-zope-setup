@@ -27,6 +27,23 @@ plone_distribution:
     - "plone.classicui"
   default: "plone.classicui"
 
+plone_addons:
+  type: yaml
+  help: Which distribution do you want to install?
+  choices:
+    caching support: "plone.app.caching"
+    versioning support: "plone.app.iterate"
+    discussion support: "plone.app.discussion"
+    multilingual support: "plone.app.multilingual"
+    placeful workflow support: "Products.CMFPlacefulWorkflow"
+    restapi support: "plone.restapi"
+    collective.easyform: "collective.easyform"
+    collective.collectionfilter: "collective.collectionfilter"
+    collective.exportimport: "collective.exportimport"
+    plone.gallery: "plone.gallery"
+  multiselect: true
+  default: []
+
 initial_zope_username:
   type: str
   help: Initial Zope username
