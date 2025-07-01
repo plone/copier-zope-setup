@@ -30,6 +30,15 @@ This will install copier as a `uv` tool and you can run it directly.
 copier copy gh:plone/copier-zope-setup . --trust
 ```
 
+### Install `invoke`
+
+if you don't have `invoke` installed, the easiest way is running this command:
+
+```sh
+uv tool install invoke
+```
+
+
 ### Install or update dependencies
 
 ```sh
