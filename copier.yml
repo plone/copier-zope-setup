@@ -31,7 +31,6 @@ plone_addons:
   type: yaml
   help: Which distribution do you want to install?
   choices:
-    caching support: "plone.app.caching"
     versioning support: "plone.app.iterate"
     discussion support: "plone.app.discussion"
     multilingual support: "plone.app.multilingual"
