@@ -11,7 +11,7 @@ def update_pyproject(
     plone_addons=None,
 ):
     print("Updating pyproject.toml.")
-    plone_addons = plone_addons or []
+    plone_addons = plone_addons and plone_addons.split(",") or []
     with open("pyproject.toml") as f:
         doc = tomlkit.parse(f.read())
 
