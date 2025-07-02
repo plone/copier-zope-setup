@@ -67,9 +67,11 @@ or without the answering the questions again:
 copier update --defaults --trust
 ```
 
-You can also add `https://github.com/MrTango/pdmplone` to trusted locations and run the commands without the `--trust` parameter.
+You can also add `https://github.com/MrTango/pdmplone` to trusted locations in Copier settings file and run the commands without the `--trust` parameter.
 
 https://copier.readthedocs.io/en/stable/settings/#trusted-locations
+
+#### Example Copier settings file
 
 On Linux:
 
@@ -78,9 +80,7 @@ mkdir ~/.config/copier
 touch ~/.config/copier/settings.yml
 ```
 
-### Example Copier settings file
-
-Note: for the default to work, the question has to have a default paramter set!
+Note: for the default to work, the question has to have a default parameter set!
 
 ```yml
 defaults:
