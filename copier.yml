@@ -154,7 +154,7 @@ _message_after_update: |
 _tasks:
   - [uv, venv]
   - [uv, add, invoke, tomlkit]
-  - [uv, run, invoke, "--search-root={{ _copier_conf.src_path }}", update-pyproject, "--plone-version={{_copier_answers['plone_version']}}", "--plone-distribution={{_copier_answers['plone_distribution']}}", "--db-storage={{_copier_answers['db_storage']}}"]
+  - [uv, run, invoke, "--search-root={{ _copier_conf.src_path }}", update-pyproject, "--plone-version={{_copier_answers['plone_version']}}", "--plone-distribution={{_copier_answers['plone_distribution']}}", "--db-storage={{_copier_answers['db_storage']}}", "--plone-addons={{_copier_answers['plone_addons']}}"]
   - command: "git init"
     when: "{{ _copier_operation == 'copy' }}"
   - command: "git add ."

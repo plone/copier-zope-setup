@@ -1,5 +1,7 @@
 # Copier template to create Plone/Zope setup - EXPERIMENTAL !!!
 
+[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
+
 It supports storage backends standalone, ZEO and Relstorage and is using pyruvate as WSGI server.
 This template is meant to work standalone and inside an Plone addon.
 

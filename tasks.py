@@ -3,9 +3,15 @@ from invoke import task
 
 
 @task
-def update_pyproject(c, plone_version="6.1.1", plone_distribution="plone.volto", db_storage="direct"):
+def update_pyproject(
+    c,
+    plone_version="6.1.1",
+    plone_distribution="plone.volto",
+    db_storage="direct",
+    plone_addons=None,
+):
     print("Updating pyproject.toml.")
-    print(plone_distribution)
+    plone_addons = plone_addons or []
     with open("pyproject.toml") as f:
         doc = tomlkit.parse(f.read())
 
@@ -16,10 +22,22 @@ def update_pyproject(c, plone_version="6.1.1", plone_distribution="plone.volto",
     if db_storage == "zeo":
         dependencies.append("ZEO")
     if db_storage == "relstorage":
-        dependencies.extend([
-            "relstorage",
-            "psycopg2",
-        ])
+        dependencies.extend(
+            [
+                "relstorage",
+                "psycopg2",
+            ]
+        )
+
+    # always add required addons:
+    plone_addons.extend(
+        [
+            "plone.app.caching",
+            "plone.app.upgrade",
+        ]
+    )
+    dependencies.extend([addon for addon in plone_addons])
+
     for dep in dependencies:
         if dep in doc["project"]["dependencies"]:
             continue

@@ -1,13 +1,8 @@
 [project]
 name = "zope-setup"
 version = "1.0.0"
-dependencies = [
-    "plone.app.caching",
-    "plone.app.upgrade",
-{% for addon in plone_addons %}
-    "{{addon}}",
-{% endfor %}
-]
+dependencies = []
+
 requires-python = ">=3.11.1"
 
 
