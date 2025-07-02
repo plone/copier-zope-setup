@@ -29,8 +29,16 @@ This will install copier as a `uv` tool and you can run it directly.
 
 ### Create project
 
+In your project folder run:
+
 ```sh
 copier copy gh:plone/copier-zope-setup . --trust
+```
+
+or if you don't one yet, run something like this:
+
+```sh
+copier copy gh:plone/copier-zope-setup my-project --trust
 ```
 
 ### Install `invoke`
