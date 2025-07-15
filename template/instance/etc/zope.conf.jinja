@@ -1,4 +1,8 @@
 %define INSTANCE {{ dst_path | realpath }}/instance
+{% if db_storage == "zeo" %}
+%define ZEO_INSTANCE {{ dst_path | realpath }}/zeo_server
+{% endif %}
+
 # dst_realpath: {{ dst_realpath }}
 instancehome $INSTANCE
 
@@ -37,7 +41,11 @@ default-zpublisher-encoding utf-8
     <zeoclient>
         # blobs
         shared-blob-dir {{zeoclient_shared_blob_dir}}
+        {% if zeoclient_shared_blob_dir %}
+        blob-dir $ZEO_INSTANCE/var/blobstorage
+        {% else %}
         blob-dir $INSTANCE/var/blobstorage
+        {% endif %}
         # general settings
         server {{ zeo_server_address }}
         name zeostorage
