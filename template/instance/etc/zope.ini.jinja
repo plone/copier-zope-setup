@@ -61,14 +61,14 @@ formatter = generic
 
 [handler_accesslog]
 class = FileHandler
-args = (r'{{ dst_path | realpath }}/instance/var/log/instance-access.log', 'a')
+args = (r'%(here)s/../var/log/instance-access.log', 'a')
 kwargs = {}
 level = INFO
 formatter = message
 
 [handler_eventlog]
 class = FileHandler
-args = (r'{{ dst_path | realpath }}/instance/var/log/instance.log', 'a')
+args = (r'%(here)s/../var/log/instance.log', 'a')
 kwargs = {}
 level = NOTSET
 formatter = generic
