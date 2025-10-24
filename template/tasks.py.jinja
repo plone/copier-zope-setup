@@ -1,22 +1,49 @@
 # this tasks can be used by Python invoke command
 # $ invoke start
+# or short
+# $ inv start
 
 from invoke import task
-
+import os
 
 @task
-def start(c):
+def start(ctx):
     print("starting Plone")
-    c.run("uv run runwsgi instance/etc/zope.ini")
+    ctx.run("uv run runwsgi instance/etc/zope.ini")
 
 {% if db_storage == 'zeo' %}
 @task
-def zeo_start(c):
-    print("starting ZEO Server")
-    c.run("uv run runzeo -C zeo_server/etc/zeo.conf")
+def client1_start(ctx):
+    print("starting Plone ZEO client 1")
+    ctx.run("uv run runwsgi instance1/etc/zope.ini")
 
-{% endif %}
 @task
-def install(c):
+def client2_start(ctx):
+    print("starting Plone ZEO client 2")
+    ctx.run("uv run runwsgi instance2/etc/zope.ini")
+
+@task
+def zeo_start(ctx):
+    print("starting ZEO Server")
+    ctx.run("uv run runzeo -C zeo_server/etc/zeo.conf")
+{% endif %}
+
+@task
+def generate_zope_conf(ctx):
+    # Get the absolute path of the directory containing tasks.py
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+
+    with open(os.path.join(base_dir, "zope.conf.tpl"), "r") as f:
+        template = f.read()
+    conf = template.replace("<<BASE_PATH>>", base_dir)
+    with open(os.path.join(base_dir, "zope.conf"), "w") as f:
+        f.write(conf)
+    print(f"zope.conf generated with base path: {base_dir}")
+
+@task
+def install(ctx):
     print("installing Plone")
-    c.run("uv sync")
+    ctx.run("uv sync")
+
+    print("generating zope.conf")
+    ctx.invoke(generate_zope_conf)

@@ -76,9 +76,10 @@ or without the answering the questions again:
 copier update --defaults --trust
 ```
 
-You can also add `https://github.com/MrTango/pdmplone` to trusted locations in Copier settings file and run the commands without the `--trust` parameter.
+You can also add `https://github.com/plone/copier-zope-setup` to trusted locations in Copier settings file and run the commands without the `--trust` parameter.
 
 https://copier.readthedocs.io/en/stable/settings/#trusted-locations
+
 
 #### Example Copier settings file
 

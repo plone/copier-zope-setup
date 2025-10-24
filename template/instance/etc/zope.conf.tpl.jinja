@@ -1,9 +1,10 @@
-%define INSTANCE {{ dst_path | realpath }}/instance
+# you can make adjustments here and run `inv install` again to generate the new zope.conf
+
+%define INSTANCE <<BASE_PATH>>/instance
 {% if db_storage == "zeo" %}
-%define ZEO_INSTANCE {{ dst_path | realpath }}/zeo_server
+%define ZEO_INSTANCE <<BASE_PATH>>/zeo_server
 {% endif %}
 
-# dst_realpath: {{ dst_realpath }}
 instancehome $INSTANCE
 
 %define CLIENTHOME $INSTANCE/var
