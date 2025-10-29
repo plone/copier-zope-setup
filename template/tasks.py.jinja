@@ -33,10 +33,10 @@ def generate_zope_conf(ctx):
     # Get the absolute path of the directory containing tasks.py
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
-    with open(os.path.join(base_dir, "zope.conf.tpl"), "r") as f:
+    with open(os.path.join(base_dir, "instance", "etc", "zope.conf.tpl"), "r") as f:
         template = f.read()
     conf = template.replace("<<BASE_PATH>>", base_dir)
-    with open(os.path.join(base_dir, "zope.conf"), "w") as f:
+    with open(os.path.join(base_dir, "instance", "etc", "zope.conf"), "w") as f:
         f.write(conf)
     print(f"zope.conf generated with base path: {base_dir}")
 
@@ -46,4 +46,14 @@ def install(ctx):
     ctx.run("uv sync")
 
     print("generating zope.conf")
-    ctx.invoke(generate_zope_conf)
+    generate_zope_conf(ctx)
+
+
+@task
+def backup(ctx):
+    ctx.run("./backup.sh")
+
+
+@task
+def backup_restore(ctx):
+    ctx.run("./backup-restore.sh")
