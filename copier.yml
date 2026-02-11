@@ -1,11 +1,19 @@
 _subdirectory: template
 _answers_file: .copier-answers.zope-setup.yml
 
+_external_data:
+  parent_tpl: "{{ parent_tpl_answers_file }}"
+
 _exclude:
-    - "{% if _copier_operation == 'update' -%}instance/inituser{% endif %}"
+  - "{% if _copier_operation == 'update' -%}instance/inituser{% endif %}"
 
 _skip_if_exists:
   - pyproject.toml
+
+parent_tpl_answers_file:
+  type: str
+  default: .copier-answers.zope-setup2.yml
+  when: false
 
 dst_path:
   type: str
@@ -102,7 +110,7 @@ dbhost:
   default: localhost
   when: "{{ db_storage == 'relstorage' }}"
 
-dbhost:
+dbport:
   type: str
   help: Database Port
   default: 5432
